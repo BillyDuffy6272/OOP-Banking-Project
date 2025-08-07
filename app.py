@@ -1,31 +1,75 @@
-
 from account import Account
 from account_wd import Account_wd
 from account_storage import Account_storage
 import csv
 
+
 def creating_account():
+    global name, account_number, account_balance
     account = Account()
     account_name_input = input("What is the account name : ")
     while True:
         account_number_input = input("Please enter a unqiue 8-digit account number: ")
         if len(account_number_input) == 8:
-            print("Wellest done, youdif entered 8 values")
+            print("You have entered a valid account number")
         elif len(account_number_input) < 8:
-            print("Blimey idiot, youdve entered too less thanif 8")
+            print("idiot, you have entered too less than 8")
             continue
         else:
-            print("Blimey idiot, youdve entered too more thanif 8")
+            print("idiot, you have entered too more than 8")
             continue
         break
     while True:
         try:
             account_balance_input = int(input("How rich are you (initial balance)? "))
         except:
-            print("Wouldve thou ensure it is thy valid number")
+            print("Ensure it is a valid number, try again")
         else:
             break
+    print(" ")
+    print(" ")
+    print(" ")
     account.signup(account_name_input, account_number_input, account_balance_input)
     account.display_info()
+    print(" ")
+    print(" ")
+    print(" ")
 
-creating_account()
+
+    storage = Account_storage(account_name_input, account_number_input, account_balance_input)
+    storage.account_store()
+
+    name = account_name_input
+    account_number = account_number_input
+    account_balance = account_balance_input
+
+
+
+creating_account() 
+
+
+
+def update_account_info(name, account_number, account_balance):
+    updated_rows = []
+    with open("account_info.csv", mode="r") as csv_file:
+        reader = csv.reader(csv_file)
+        for row in reader:
+            if row[0] == name and row[1] == account_number:
+                updated_rows.append([name, account_number, account_balance])
+            else:
+                updated_rows.append(row)
+
+    with open("account_info.csv", mode="w", newline="") as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerows(updated_rows)
+    
+
+store = Account_wd(name, account_number, account_balance)
+account_balance = store.d_w()
+update_account_info(name, account_number, account_balance)
+
+display = Account_wd(name, account_number, account_balance)
+print(" ")
+print(" ")
+print(" ")
+display_info = display.display_info()
