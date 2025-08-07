@@ -1,8 +1,10 @@
 from account import Account
 from account_wd import Account_wd
 from account_storage import Account_storage
+from account_login import Account_Login
 import csv
 
+what_to_do = input("Do you want to login or create an account? (login/create): ")
 
 def creating_account():
     global name, account_number, account_balance
@@ -43,12 +45,6 @@ def creating_account():
     account_number = account_number_input
     account_balance = account_balance_input
 
-
-
-creating_account() 
-
-
-
 def update_account_info(name, account_number, account_balance):
     updated_rows = []
     with open("account_info.csv", mode="r") as csv_file:
@@ -64,12 +60,39 @@ def update_account_info(name, account_number, account_balance):
         writer.writerows(updated_rows)
     
 
-store = Account_wd(name, account_number, account_balance)
-account_balance = store.d_w()
-update_account_info(name, account_number, account_balance)
+if what_to_do.lower() == "create":
+    creating_account()
 
-display = Account_wd(name, account_number, account_balance)
-print(" ")
-print(" ")
-print(" ")
-display_info = display.display_info()
+    store = Account_wd(name, account_number, account_balance)
+    account_balance = store.d_w()
+
+    update_account_info(name, account_number, account_balance)
+elif what_to_do.lower() == "login":
+    login = Account_Login(None, None, None)
+    account_login = login.login()
+    if account_login:
+        name, account_number, account_balance = account_login
+        store = Account_wd(name, account_number, account_balance)
+        account_balance = store.d_w()
+        update_account_info(name, account_number, account_balance)
+
+        display = Account_wd(name, account_number, account_balance)
+        print(" ")
+        print(" ")
+        print(" ")
+        display_info = display.display_info()
+    else:
+        print("Login failed. Please restart the program.")
+        exit()
+
+    store = Account_wd(name, account_number, account_balance)
+    account_balance = store.d_w()
+
+    update_account_info(name, account_number, account_balance)
+else:
+    print("Invalid option. Please restart the program")
+
+
+
+
+
