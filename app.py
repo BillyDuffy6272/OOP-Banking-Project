@@ -5,6 +5,7 @@ from account_login import Account_Login
 import csv
 # Import information, variables, and classes from other files
 
+print("Welcome to the Banking App! Created by the Gellert, Alex and Co")
 what_to_do = input("Do you want to login or create an account? (login/create): ")
 
 def creating_account():
